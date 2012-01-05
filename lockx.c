@@ -90,7 +90,7 @@ int
 main(int argc, char **argv)
 {
 	char curs[] = {0, 0, 0, 0, 0, 0, 0, 0};
-	char buf[32], passwd[256] = { 0 };
+	char buf[32], passwd[256];
 	int num, screen;
 #ifndef HAVE_BSD_AUTH
 	const char *pws;
@@ -110,7 +110,6 @@ main(int argc, char **argv)
 	int i, k, count;
 	char tempbuf[256];
 
-
 	if((argc == 2) && !strcmp("-v", argv[1]))
 	{
 		die("lockx-"VERSION", © 2008 Andre Prata\n");
@@ -119,9 +118,17 @@ main(int argc, char **argv)
 	{
 		die("usage: lockx [-v]\n");
 	}
+
+	for(i = 0; i < sizeof passwd; i++) {
+		passwd[i] = '\0';
+	}
+
 #ifndef HAVE_BSD_AUTH
 	pws = get_password();
 #endif
+
+
+
 	if(!(dpy = XOpenDisplay(0)))
 	{
 		die("lockx: cannot open display\n");
