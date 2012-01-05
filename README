@@ -1,0 +1,42 @@
+lockx - simple screen locker
+============================
+simple screen locker utility for X. This is heavily based
+on slock (http://www.suckless.org/wiki/tools/xlib) and the
+main difference is that slock requires you to clear the buffer
+(with enter, escape or backspaces) if you mistype your password,
+whereas lockx will allways check the last (256 at most) entered
+characters and try to match the password, so if you mistype, just
+start over... No need to <ENTER> before or after...
+
+e.g. by the time you have entered "sj2Sk@#" lockx will test:
+"#"
+"@#"
+"k@#"
+"Sk@#"
+"2Sk@#"
+"j2Sk@#"
+"sj2Sk@#"
+
+This might also be useful to avoid pranker friends to try to see your
+password to browse your files or change configurations :P.
+
+
+Requirements
+------------
+In order to build lockx you need the Xlib header files.
+
+
+Installation
+------------
+Edit config.mk to match your local setup (lockx is installed into
+the /usr/local namespace by default).
+
+Afterwards enter the following command to build and install lockx (if
+necessary as root):
+
+    make clean install
+
+
+Running lockx
+-------------
+Simply invoke the 'lockx' command. To get out of it, enter your password.
