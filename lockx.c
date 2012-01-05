@@ -96,7 +96,9 @@ main(int argc, char **argv)
 	const char *pws;
 #endif
 	unsigned int len;
-	Bool running = True;
+	Bool running = True, dpmsRestore = True;
+	BOOL dpmsWasActive;
+	CARD16 dpmsPowerLevel;
 	Cursor invisible;
 	Display *dpy;
 	KeySym ksym;
@@ -161,6 +163,16 @@ main(int argc, char **argv)
 	}
 	len = 0;
 	XSync(dpy, False);
+
+	/* get old DPMS status and enable DPMS if needed */
+	if(True == DPMSInfo(dpy, &dpmsPowerLevel, &dpmsWasActive)) {
+		if(False == dpmsWasActive) {
+			DPMSEnable(dpy);
+		}
+	}
+	else {
+		dpmsRestore = False;
+	}
 
 	/* main event loop */
 	while(running && !XNextEvent(dpy, &ev))
@@ -235,6 +247,13 @@ main(int argc, char **argv)
 				}
 				break;
 			}
+		}
+	}
+
+	/* restore dpms */
+	if(dpmsRestore) {
+		if(!dpmsWasActive) {
+			DPMSDisable(dpy);
 		}
 	}
 
